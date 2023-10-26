@@ -1,0 +1,38 @@
+$primary: #396ea1;
+$secondary: #f9b8ce;
+$success: #21c16e;
+$info: #f7789b;
+$warning: #ecd21c;
+$danger: #fd1f1c;
+$light: #ffedef;
+$dark: #5c267a;
+$white: #ffffff;
+
+$theme-colors: (
+  "primary": $primary,
+  "secondary": $secondary,
+  "success": $success,
+  "info": $info,
+  "danger": $danger,
+  "warning": $warning,
+  "light": $light,
+  "dark": $dark,
+);
+
+@import "~bootstrap/scss/bootstrap.scss";
+@import "~bootstrap-icons/font/bootstrap-icons.scss";
+
+body {
+  margin: 0;
+  color: $dark;
+  background-color: $light;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.btn-outline-success {
+  &:hover,
+  &:hover:active {
+    color: $white;
+  }
+}
