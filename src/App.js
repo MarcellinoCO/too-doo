@@ -1,18 +1,61 @@
+import { v4 as uuidv4 } from "uuid";
+
+import { useDispatch, useSelector } from "react-redux";
+import { addTodo } from "./store/slices/todoSlice";
+
 import Filters from "./components/Filter";
+import TodoItem from "./components/Todo";
 
 function App() {
+  const todos = useSelector((state) => state.todos);
+  const filter = useSelector((state) => state.filter);
+  const dispatch = useDispatch();
+
+  const filteredTodos = todos.filter((todo) => {
+    if (filter === "active") return !todo.completed;
+    if (filter === "completed") return todo.completed;
+    return true;
+  });
+
+  const add = (content) => {
+    const todo = {
+      id: uuidv4(),
+      completed: false,
+      timestamp: new Date().toISOString(),
+      content,
+    };
+
+    dispatch(addTodo(todo));
+  };
+
   return (
     <div className="container mt-5">
       <h1 className="mb-4 fw-bold">Let&apos;s get things done!</h1>
-      <div className="input-group mb-4">
-        <input className="form-control" type="text" placeholder="What to do" />
+      <form
+        className="input-group mb-4"
+        onSubmit={(e) => {
+          e.preventDefault();
+          const formData = new FormData(e.target);
+          const content = formData.get("content");
+          add(content);
+          e.target.reset();
+        }}
+      >
+        <input
+          className="form-control"
+          type="text"
+          name="content"
+          placeholder="What do you want to do?"
+          required
+        />
+
         <button
           className="btn btn-primary px-3 text-white fw-bold"
-          type="button"
+          type="submit"
         >
           <i className="bi bi-plus-circle me-1" /> Add
         </button>
-      </div>
+      </form>
 
       <hr />
 
@@ -22,17 +65,9 @@ function App() {
       </div>
 
       <ul className="list-group">
-        <li className="list-group-item d-flex justify-content-between align-items-center">
-          <span>Buy milk</span>
-          <div className="btn-group" role="group">
-            <button className="btn btn-outline-success btn-sm" type="button">
-              Mark as done <i className="bi bi-check-circle ms-1" />
-            </button>
-            <button className="btn btn-danger btn-sm" type="button">
-              <i className="bi bi-trash text-white" />
-            </button>
-          </div>
-        </li>
+        {filteredTodos.map((todo) => (
+          <TodoItem key={todo.id} todo={todo} />
+        ))}
       </ul>
     </div>
   );

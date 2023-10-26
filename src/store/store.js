@@ -9,10 +9,7 @@ const rootReducer = combineReducers({
 });
 
 const store = configureStore({
-  reducer: {
-    todos: todoReducer,
-    filter: filterReducer,
-  },
+  reducer: rootReducer,
 });
 
 export default store;
